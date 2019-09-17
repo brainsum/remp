@@ -5,7 +5,6 @@
  * Contains remp.module.
  */
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 
@@ -43,16 +42,24 @@ function remp_node_view_alter(array &$build,
   EntityViewDisplayInterface $display) {
   if ($build['#entity_type'] === 'node' && $build['#view_mode'] === 'full' &&
     !empty($entity->remp_member_only->value)) {
+    /** @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+    $view_builder = \Drupal::service('entity_type.manager')
+      ->getViewBuilder('node');
     $build = [];
-    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
     $build['member'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['only-members']],
+      '#attributes' => [
+        'id' => 'remp-member',
+        'class' => ['only-member'],
+      ],
       'content' => $view_builder->view($entity, 'full'),
     ];
     $build['anonym'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['only-anonym']],
+      '#attributes' => [
+        'id' => 'remp-anonym',
+        'class' => ['only-anonym'],
+      ],
       'content' => $view_builder->view($entity, 'anonym'),
     ];
   }
