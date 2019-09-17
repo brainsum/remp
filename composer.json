@@ -1,0 +1,13 @@
+{
+    "name": "remp",
+    "type": "drupal-module",
+    "description": "The REMP CRM integration module.",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/remp",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/remp",
+        "source": "http://cgit.drupalcode.org/remp"
+    }
+}

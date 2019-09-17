@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * @file
+ * Contains remp.module.
+ */
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
+/**
+ * Implements hook_help().
+ */
+function remp_help($route_name,
+  RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the remp module.
+    case 'help.page.remp':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The REMP CRM integration module.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function remp_preprocess_node(&$variables) {
+  if ($variables['view_mode'] === 'anonym') {
+    unset($variables['label']);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function remp_node_view_alter(array &$build,
+  EntityInterface $entity,
+  EntityViewDisplayInterface $display) {
+  if ($build['#entity_type'] === 'node' && $build['#view_mode'] === 'full' &&
+    !empty($entity->remp_member_only->value)) {
+    $build = [];
+    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+    $build['member'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['only-members']],
+      'content' => $view_builder->view($entity, 'full'),
+    ];
+    $build['anonym'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['only-anonym']],
+      'content' => $view_builder->view($entity, 'anonym'),
+    ];
+  }
+}
