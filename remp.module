@@ -62,5 +62,7 @@ function remp_node_view_alter(array &$build,
       ],
       'content' => $view_builder->view($entity, 'anonym'),
     ];
+
+    $build['#attached']['library'][] = 'remp/remp';
   }
 }

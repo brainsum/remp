@@ -1,0 +1,10 @@
+remp:
+  version: VERSION
+  js:
+    js/remp.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery.cookie
+    - core/jquery.once
