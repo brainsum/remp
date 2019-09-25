@@ -4,7 +4,7 @@
 
   Drupal.behaviors.Remp = {
 
-    apiUrl: window.location.protocol + '//' + 'crm.' + window.location.hostname + ':' + (window.location.port || 80),
+    apiUrl: drupalSettings.remp.host ? drupalSettings.remp.host + '/api/v1' : false,
 
     tokenData: {
       n_email: '',
@@ -14,11 +14,12 @@
     // Attach behavior.
     attach: function(context, settings) {
       let REMP = this;
-
-      $('body', context).once('remp').each(function(){
-        // Check user login status and display accessible content.
-        REMP.checkStatus(REMP.showContent.bind(REMP), REMP.showLogin.bind(REMP));
-      });
+      if (REMP.apiUrl) {
+        $('body', context).once('remp').each(function(){
+          // Check user login status and display accessible content.
+          REMP.checkStatus(REMP.showContent.bind(REMP), REMP.showLogin.bind(REMP));
+        });
+      }
     },
 
     // Init remp elements.
@@ -37,7 +38,7 @@
       if (REMP.tokenData.n_token) {
         $.ajax({
           method: 'GET',
-          url: REMP.apiUrl + '/api/v1/user/info',
+          url: REMP.apiUrl + '/user/info',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + REMP.tokenData.n_token
@@ -47,7 +48,7 @@
           if (response.status == 'ok') {
             $.ajax({
               method: 'POST',
-              url: REMP.apiUrl + '/api/v1/users/subscriptions',
+              url: REMP.apiUrl + '/users/subscriptions',
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': 'Bearer ' + REMP.tokenData.n_token
@@ -121,13 +122,12 @@
     // subscription.
     showLogin: function(loggedIn) {
       let REMP = this;
-      let funnel = 'sample';
+      let funnel = drupalSettings.remp.funnel;
 
       if (REMP.memberContent.length) {
         if (loggedIn) {
-          let url = window.location.protocol + '//' + 'crm.' + window.location.hostname + ':' + (window.location.port || 80);
           REMP.anonymContent.append($('<h3>').text(Drupal.t("You don't have active subscription for this content.")));
-          REMP.anonymContent.append($('<a/>', { href: url + '/sales-funnel/sales-funnel-frontend/free?funnel=' + funnel + '&destination=' + window.location.href, target: '_blank' }).text(Drupal.t('Apply for subscription to view full content')));
+          REMP.anonymContent.append($('<a/>', { href: drupalSettings.remp.host + '/sales-funnel/sales-funnel-frontend/free?funnel=' + funnel + '&destination=' + window.location.href, target: '_blank' }).text(Drupal.t('Apply for subscription to view full content')));
         } else {
           REMP.buildForm();
         }
@@ -164,7 +164,7 @@
 
         $.ajax({
           method: 'POST',
-          url: REMP.apiUrl + '/api/v1/users/login',
+          url: REMP.apiUrl + '/users/login',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             'Accept': 'application/json'

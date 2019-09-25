@@ -4,6 +4,7 @@
  * @file
  * Contains remp.module.
  */
+
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -63,6 +64,12 @@ function remp_node_view_alter(array &$build,
       'content' => $view_builder->view($entity, 'anonym'),
     ];
 
+    $config = \Drupal::config('remp.config');
+
     $build['#attached']['library'][] = 'remp/remp';
+    $build['#attached']['drupalSettings']['remp'] = [
+      'host' => $config->get('host'),
+      'funnel' => $config->get('funnel'),
+    ];
   }
 }
