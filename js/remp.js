@@ -130,6 +130,8 @@
           REMP.anonymContent.append($('<a/>', { href: drupalSettings.remp.host + '/sales-funnel/sales-funnel-frontend/free?funnel=' + funnel + '&destination=' + window.location.href, target: '_blank' }).text(Drupal.t('Apply for subscription to view full content')));
         } else {
           REMP.buildForm();
+          REMP.anonymContent.append($('<h3>').text(Drupal.t("Not a member?")));
+          REMP.anonymContent.append($('<a/>', { href: drupalSettings.remp.host + '/sales-funnel/sales-funnel-frontend/free?funnel=' + funnel + '&destination=' + window.location.href, target: '_blank' }).text(Drupal.t('Register Here')));
         }
       }
     },
