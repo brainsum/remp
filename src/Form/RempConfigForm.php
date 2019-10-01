@@ -46,6 +46,13 @@ class RempConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('funnel'),
     ];
 
+    $form['custom'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use own anonym member sections'),
+      '#description' => $this->t('Check in if prepare custom anonym and member sections. In this case you need prepare two div section. For anonym id="remp-anonym". For member id="remp-member".'),
+      '#default_value' => $config->get('custom'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -58,6 +65,7 @@ class RempConfigForm extends ConfigFormBase {
     $this->config('remp.config')
       ->set('host', rtrim($form_state->getValue('host'), '/'))
       ->set('funnel', $form_state->getValue('funnel'))
+      ->set('custom', $form_state->getValue('custom'))
       ->save();
   }
 
