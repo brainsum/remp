@@ -48,14 +48,6 @@ function remp_node_view_alter(array &$build,
       $view_builder = \Drupal::service('entity_type.manager')
         ->getViewBuilder('node');
       $build = [];
-      $build['member'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'id' => 'remp-member',
-          'class' => ['only-member'],
-        ],
-        'content' => $view_builder->view($entity, 'full'),
-      ];
       $build['anonym'] = [
         '#type' => 'container',
         '#attributes' => [
@@ -63,6 +55,14 @@ function remp_node_view_alter(array &$build,
           'class' => ['only-anonym'],
         ],
         'content' => $view_builder->view($entity, 'anonym'),
+      ];
+      $build['member'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'id' => 'remp-member',
+          'class' => ['only-member'],
+        ],
+        'content' => $view_builder->view($entity, 'full'),
       ];
     }
 

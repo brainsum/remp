@@ -105,7 +105,7 @@
     // Displays restricted content.
     showContent: function() {
       if (this.memberContent.length) {
-        this.anonymContent.hide();
+        // this.anonymContent.hide();
         this.memberContent.show();
       }
     },
@@ -114,7 +114,7 @@
     hideContent: function () {
       if (this.memberContent.length) {
         this.anonymContent.show();
-        this.memberContent.hide();
+        // this.memberContent.hide();
       }
     },
 
