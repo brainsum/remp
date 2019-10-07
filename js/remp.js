@@ -113,8 +113,8 @@
     // Hides restricted content.
     hideContent: function () {
       if (this.memberContent.length) {
-        this.anonymContent.show();
-        // this.memberContent.hide();
+        // this.anonymContent.show();
+        this.memberContent.hide();
       }
     },
 
