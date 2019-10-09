@@ -7,3 +7,14 @@ remp.settings_form:
     _permission: 'access administration pages'
   options:
     _admin_route: TRUE
+
+remp.content:
+  path: 'remp_content/{entity_type}/{entity_id}'
+  defaults:
+    _controller: 'Drupal\remp\Controller\RempContentController::content'
+    _title: 'JSON api'
+  methods:  [POST]
+  requirements:
+    _custom_access: 'Drupal\remp\Controller\RempContentController::access'
+    entity_type: '[a-zA-Z_]+'
+    entity_id: '\d+'

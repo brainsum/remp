@@ -4,6 +4,7 @@
  * @file
  * Contains remp.module.
  */
+
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -59,10 +60,11 @@ function remp_node_view_alter(array &$build,
       $build['member'] = [
         '#type' => 'container',
         '#attributes' => [
+          // TODO: make this ID unique for every content.
           'id' => 'remp-member',
           'class' => ['only-member'],
+          'data-remp-id' => $entity->getEntityTypeId() . ':' . $entity->id(),
         ],
-        'content' => $view_builder->view($entity, 'full'),
       ];
     }
 

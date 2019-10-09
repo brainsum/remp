@@ -104,17 +104,12 @@
 
     // Displays restricted content.
     showContent: function() {
+      let REMP = this;
       if (this.memberContent.length) {
-        // this.anonymContent.hide();
-        this.memberContent.show();
-      }
-    },
+        let rempId = this.memberContent.attr('data-remp-id').split(':');
+        let endpoint = drupalSettings.path.baseUrl + 'remp_content/' + rempId[0] + '/' + rempId[1];
 
-    // Hides restricted content.
-    hideContent: function () {
-      if (this.memberContent.length) {
-        // this.anonymContent.show();
-        this.memberContent.hide();
+        Drupal.ajax({url: endpoint}).execute();
       }
     },
 
@@ -211,6 +206,5 @@
 
   // Initialize Remp and hide content.
   Drupal.behaviors.Remp.init();
-  Drupal.behaviors.Remp.hideContent();
 
 })(jQuery, Drupal, drupalSettings);
