@@ -1,4 +1,4 @@
-name: 'REMP'
+name: 'REMP Paywall'
 type: module
 description: 'The REMP CRM integration module.'
 core: 8.x

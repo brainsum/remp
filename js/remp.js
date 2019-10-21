@@ -11,9 +11,13 @@
       n_token: '',
     },
 
+    settings: {},
+
     // Attach behavior.
     attach: function(context, settings) {
       let REMP = this;
+      this.settings = settings.remp;
+
       if (REMP.apiUrl) {
         $('body', context).once('remp').each(function(){
           // Check user login status and display accessible content.
@@ -26,13 +30,13 @@
     init : function() {
       this.memberContent = $('#remp-member');
       this.anonymContent = $('#remp-anonym');
+      this.getTokenData();
+      this.hideContent();
     },
 
     // Check user login status and calls appropriate callaback.
     checkStatus: function(successCallback, failCallback) {
       let REMP = this;
-      let valid = false;
-      REMP.getTokenData();
 
       // If we already have a token, check if its valid.
       if (REMP.tokenData.n_token) {
@@ -104,13 +108,20 @@
 
     // Displays restricted content.
     showContent: function() {
-      let REMP = this;
       if (this.memberContent.length) {
-        let rempId = this.memberContent.attr('data-remp-id').split(':');
-        let endpoint = drupalSettings.path.baseUrl + 'remp_content/' + rempId[0] + '/' + rempId[1];
-
-        Drupal.ajax({url: endpoint}).execute();
+        if (this.settings.custom) {
+          this.memberContent.show();
+        } else {
+          let rempId = this.memberContent.attr('data-remp-id').split(':');
+          let endpoint = drupalSettings.path.baseUrl + 'remp_content/' + rempId[0] + '/' + rempId[1];
+          Drupal.ajax({url: endpoint}).execute();
+        }
       }
+    },
+
+    // Hides restricted content.
+    hideContent: function() {
+      this.memberContent.hide();
     },
 
     // Shows login options for anonymous users or logged in users with no
